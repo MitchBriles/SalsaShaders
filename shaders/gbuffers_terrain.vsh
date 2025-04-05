@@ -23,12 +23,14 @@ void main() {
 	float lightDot = dot(normalize(shadowLightPosition), normalize(gl_NormalMatrix * gl_Normal));
 
 	vec4 viewPos = gl_ModelViewMatrix * gl_Vertex;
-	if (lightDot > 0.0) { // facing sun
+	if (lightDot > 0.1) { // facing sun
 		vec4 playerPos = gbufferModelViewInverse * viewPos;
 		shadowPos = shadowProjection * (shadowModelView * playerPos);
-		float bias = SHADOW_BIAS / shadowMapResolution;
-		shadowPos.xyz = shadowPos.xyz * 0.5 + 0.5;
-        shadowPos.z -= bias / abs(lightDot);
+		float bias = getBias(shadowPos.xyz);
+		shadowPos.xyz = distort(shadowPos.xyz) * 0.5 + 0.5;
+		// normal bias
+		vec4 normal = shadowProjection * vec4(mat3(shadowModelView) * (mat3(gbufferModelViewInverse) * (gl_NormalMatrix * gl_Normal)), 1.0);
+		shadowPos.xyz += normal.xyz / normal.w * bias;
 	}
 	else {
 		lmcoord.y *= SHADOW_BRIGHTNESS;

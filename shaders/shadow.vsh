@@ -6,6 +6,7 @@ varying vec2 lmcoord;
 varying vec2 texcoord;
 varying vec4 glcolor;
 
+#include "/util.glsl"
 
 void main() {
 	texcoord = (gl_TextureMatrix[0] * gl_MultiTexCoord0).xy;
@@ -13,5 +14,5 @@ void main() {
 	glcolor = gl_Color;
 
     gl_Position = ftransform();
-    gl_Position.xyz = gl_Position.xyz;
+    gl_Position.xyz = distort(gl_Position.xyz);
 }

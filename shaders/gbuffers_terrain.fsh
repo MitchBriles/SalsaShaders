@@ -17,7 +17,13 @@ void main() {
 	vec4 color = texture2D(texture, texcoord) * glcolor;
 	vec2 lm = lmcoord;
 	if (shadowPos.w > 0.0) {
-		if (texture2D(shadowtex0, shadowPos.xy).r < shadowPos.z) {
+		float delta = 0.5 / shadowMapResolution;
+		if (texture2D(shadowtex0, shadowPos.xy		   			).r < shadowPos.z //&&
+			// texture2D(shadowtex0, shadowPos.xy + vec2( delta, 0)).r < shadowPos.z &&
+			// texture2D(shadowtex0, shadowPos.xy + vec2( 0, delta)).r < shadowPos.z &&
+			// texture2D(shadowtex0, shadowPos.xy + vec2(-delta, 0)).r < shadowPos.z &&
+			// texture2D(shadowtex0, shadowPos.xy + vec2(0, -delta)).r < shadowPos.z
+			) {
 			lm.y *= SHADOW_BRIGHTNESS;
 		}
 		else {
