@@ -1,7 +1,5 @@
 #version 120
 
-attribute vec4 mc_Entity;
-
 uniform mat4 gbufferModelView;
 uniform mat4 gbufferModelViewInverse;
 uniform mat4 shadowModelView;
@@ -19,16 +17,10 @@ void main() {
 	texcoord = (gl_TextureMatrix[0] * gl_MultiTexCoord0).xy;
 	lmcoord  = (gl_TextureMatrix[1] * gl_MultiTexCoord1).xy;
 	glcolor = gl_Color;
-
-	float lightDot = dot(normalize(shadowLightPosition), normalize(gl_NormalMatrix * gl_Normal));
-	#ifdef EXCLUDE_FOLIAGE
-		//when EXCLUDE_FOLIAGE is enabled, act as if foliage is always facing towards the sun.
-		//in other words, don't darken the back side of it unless something else is casting a shadow on it.
-		if (mc_Entity.x == 10000.0) lightDot = 1.0;
-	#endif
-
+	
 	vec4 viewPos = gl_ModelViewMatrix * gl_Vertex;
-	if (lightDot > 0.0) { //vertex is facing towards the sun
+	float lightDot = dot(normalize(shadowLightPosition), normalize(gl_NormalMatrix * gl_Normal));
+	if (lightDot > 0.0) { //vertex is facing towards the sun.
 		vec4 playerPos = gbufferModelViewInverse * viewPos;
 		shadowPos = shadowProjection * (shadowModelView * playerPos); //convert to shadow ndc space.
 		float bias = computeBias(shadowPos.xyz);
@@ -49,5 +41,6 @@ void main() {
 		shadowPos = vec4(0.0); //mark that this vertex does not need to check the shadow map.
 	}
 	shadowPos.w = lightDot;
+	//use consistent transforms for entities and hand so that armor glint doesn't have z-fighting issues.
 	gl_Position = gl_ProjectionMatrix * viewPos;
 }

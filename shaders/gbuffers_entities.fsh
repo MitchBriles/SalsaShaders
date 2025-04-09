@@ -19,10 +19,6 @@ const bool shadowcolor0Nearest = true;
 const bool shadowtex0Nearest = true;
 const bool shadowtex1Nearest = true;
 
-//only using this include for shadowMapResolution,
-//since that has to be declared in the fragment stage in order to do anything.
-#include "/distort.glsl"
-
 void main() {
 	vec4 color = texture2D(texture, texcoord) * glcolor;
 	vec2 lm = lmcoord;
