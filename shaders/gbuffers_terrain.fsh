@@ -13,6 +13,8 @@ varying vec2 lmcoord;
 varying vec2 texcoord;
 varying vec4 glcolor;
 varying vec4 shadowPos;
+varying float fracty;
+varying float id;
 
 //fix artifacts when colored shadows are enabled
 const bool shadowcolor0Nearest = true;
@@ -25,6 +27,11 @@ const bool shadowtex1Nearest = true;
 
 void main() {
 	vec4 color = texture2D(texture, texcoord) * glcolor;
+
+	// if (id == 10000.0) {
+		// color.rgb = vec3(fracty);
+	// }
+
 	vec2 lm = lmcoord;
 	if (shadowPos.w > 0.0) {
 		//surface is facing towards shadowLightPosition
