@@ -55,7 +55,7 @@ vec2 adjustLightmap(in vec2 lightmap) {
 vec3 getLightmapColor(in vec2 lightmap) {
     lightmap = adjustLightmap(lightmap);
 
-    const vec3 TorchColor = vec3(1.0, 0.25, 0.08);
+    const vec3 TorchColor = vec3(1, 0.8, 0.8);
     const vec3 SkyColor = vec3(0.05, 0.15, 0.3);
 
     vec3 TorchLighting = lightmap.x * TorchColor;
@@ -111,6 +111,7 @@ vec3 getShadow(float depth) {
 }
 
 void main() {
+   // gamma correction
     vec3 albedo = pow(texture2D(colortex0, TexCoords).rgb, vec3(2.2));
     float depth = texture2D(depthtex0, TexCoords).r;
 
