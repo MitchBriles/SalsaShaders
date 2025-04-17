@@ -1,12 +1,19 @@
+#include "/config.glsl"
+
+#ifdef WAVING_PLANTS
 vec3 CalcWave(vec3 pos, float density, float speed, vec2 mult) {
     pos = pos * density + frameTimeCounter * speed;
     vec3 wave = vec3(0.0);
-    wave.x += 0.21 * sin(pos.x);
-	wave.x += 0.27 * sin(1.44 * pos.x);
+    wave.x += 0.18 * sin(pos.x);
+	wave.x += 0.22 * sin(1.44 * pos.x);
 	wave.x += 0.17 * sin(3 * pos.x);
 	wave.x += 0.1 * sin(1 * pos.x);
-	wave.y += 0.2 * sin(0.91 * (frameTimeCounter + gl_Vertex.y));
-	wave.y += 0.15 * sin(0.67 * (frameTimeCounter + gl_Vertex.y));
+	wave.y += 0.15 * sin(0.5 * pos.x);
+	wave.y += 0.1 * sin(1 * pos.x);
+	wave.y += 0.2 * sin(0.91 * pos.y);
+	wave.y += 0.15 * sin(0.67 * pos.y);
+	wave.y += 0.21 * sin(0.75 * pos.z);
+	wave.y += 0.17 * sin(1.21 * pos.z);
 	wave.z += 0.11 * sin(0.85 * pos.z);
 	wave.z += 0.27 * sin(1.21 * pos.z);
 	wave.z += 0.3 * sin(0.75 * pos.z);
@@ -35,6 +42,8 @@ vec3 WavingBlock(vec3 position, float istopv) {
             if ((mc_Entity.x == 10003.0 && (istopv > 0.9 || fract(worldpos.y + 0.005) > 0.01)) || mc_Entity.x == 10004.0)
                 wave += CalcWave(worldpos, 0.35, 1.15, vec2(0.15, 0.06));
             break;
+        case 10005:
+            break;
         default: return position;
     }
 
@@ -42,3 +51,8 @@ vec3 WavingBlock(vec3 position, float istopv) {
 
     return position;
 }
+#else
+vec3 WavingBlock(vec3 position, float istopv) {
+    return position;
+}
+#endif

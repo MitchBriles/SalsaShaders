@@ -42,7 +42,7 @@ vec3 getLightmapColor(in vec2 lightmap) {
 }
 
 float visibility(in sampler2D shadowMap, in vec3 sampleCoords) {
-    return step(sampleCoords.z - 0.001, texture2D(shadowMap, sampleCoords.xy).r);
+    return step(sampleCoords.z, texture2D(shadowMap, sampleCoords.xy).r);
 }
 
 vec3 transparentShadow(in vec3 sampleCoords) {
@@ -69,6 +69,7 @@ vec3 getShadow(float depth) {
     // apply blur and such to make soft and clean
     vec4 shadowSpace = shadowProjection * shadowModelView * world;
     shadowSpace.xy = distortPosition(shadowSpace.xy);
+    shadowSpace.z -= 1.0 / 1024.0;
     vec3 sampleCoords = shadowSpace.xyz * 0.5 + 0.5;
     float randomAngle = texture2D(noisetex, TexCoords * 20.0).r * 100.0;
     float cosTheta = cos(randomAngle);

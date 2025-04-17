@@ -1,7 +1,6 @@
 #version 120
 
 #include "/distort.glsl"
-#include "/config.glsl"
 
 varying vec2 TexCoords;
 

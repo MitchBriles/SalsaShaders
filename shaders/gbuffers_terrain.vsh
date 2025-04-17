@@ -25,7 +25,6 @@ void main() {
 
     position.xyz = WavingBlock(position.xyz, istopv);
 
-
 	gl_Position = gl_ProjectionMatrix * gbufferModelView * position;
 
     TexCoords = gl_MultiTexCoord0.st;
