@@ -63,8 +63,10 @@ vec3 getShadow(float depth) {
     vec3 view = viewW.xyz / viewW.w;
     vec4 world = gbufferModelViewInverse * vec4(view, 1.0);
 
+#ifdef PIXELATED_SHADOW
     // snap to textures
     world.xyz = floor((world.xyz + cameraPosition) * TEXTURE_RESOLUTION + 0.005) / TEXTURE_RESOLUTION.0 - cameraPosition;
+#endif // PIXELATED_SHADOW
 
     // apply blur and such to make soft and clean
     vec4 shadowSpace = shadowProjection * shadowModelView * world;
