@@ -7,7 +7,6 @@ const int colortex2Format = RGB16;
 
 const float sunPathRotation = 30.0;
 const int shadowMapResolution = 2048;
-const int noiseTextureResolution = 16;
 
 const float ambient = 0.025;
 
@@ -71,7 +70,7 @@ vec3 getShadow(float depth) {
     // apply blur and such to make soft and clean
     vec4 shadowSpace = shadowProjection * shadowModelView * world;
     shadowSpace.xy = distortPosition(shadowSpace.xy);
-    shadowSpace.z -= 1.0 / 1024.0;
+    // shadowSpace.z -= 1.0 / 2096.0;
     vec3 sampleCoords = shadowSpace.xyz * 0.5 + 0.5;
     float randomAngle = texture2D(noisetex, TexCoords * 20.0).r * 100.0;
     float cosTheta = cos(randomAngle);

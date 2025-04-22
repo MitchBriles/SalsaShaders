@@ -13,9 +13,12 @@ varying vec2 LightmapCoords;
 varying vec3 Normal;
 varying vec4 Color;
 
+out float blockID; 
+
 #include "/wavy.glsl"
 
 void main() {
+    blockID = mc_Entity.x;
     Normal = gl_NormalMatrix * gl_Normal;
 
 	vec4 position = gbufferModelViewInverse * gl_ModelViewMatrix * gl_Vertex;
